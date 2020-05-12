@@ -1,5 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+require 'admin.php';
+
+Auth::routes();
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +20,3 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::view('/admin','admin.dashboard.index');
