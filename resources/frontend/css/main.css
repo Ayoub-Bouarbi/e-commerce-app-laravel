@@ -1,0 +1,167 @@
+
+@import "global.css";
+
+
+/* Start Home Banner Style */
+
+.home-banner {
+    background-image: url("../../img/banner-bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+.home-banner .banner-content{
+    padding: 20px 0;
+}
+.home-banner .banner-content p,
+.home-banner .banner-content h1{
+    text-transform: uppercase;
+    color: #FFF;
+    margin-bottom: 10px;
+}
+.home-banner .banner-content h1 span{
+    color: #71cd14;
+}
+.home-banner .banner-content p:last-of-type{
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin-bottom: 50px;
+}
+
+
+/* End Home Banner Style */
+
+/* Start Feature Style */
+.feature-area {
+    margin: 50px;
+    overflow: hidden;
+}
+.feature-area .feature-item {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 25px 0;
+    transition: all .5s ease-in-out;
+}
+.feature-area .feature-item:hover {
+    border: 1px solid #71cd14;
+    background-color: #71cd14;
+    color: #FFF !important;
+}
+.feature-area .feature-item i {
+    font-size: 35px;
+}
+.feature-area .feature-item h5 {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.feature-area .feature-item p {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+
+/* End Feature Style */
+
+/* Start Feature Product Style */
+
+.feature-product-area{
+    margin: 30px 0;
+}
+.feature-product-area .product-item .product-img .product-links a{ 
+    margin-right: 30px;
+}
+.feature-product-area .product-item .product-content h5{
+    font-size: 18px;
+}
+/* End Feature Product Style */
+
+/* Start New Product Style */
+
+.new-product-area .new-product-item{
+    background-color: #f6f6f6;
+    text-align: center;
+    padding: 65px 20px;
+}
+
+.new-product-area .new-product-item .new-product-content{
+    text-transform: uppercase;
+    padding: 40px;
+}
+.new-product-area .new-product-item .new-product-content h4{
+    color: #333;
+    font-weight: 400;
+    padding-bottom: 10px;
+}
+.new-product-area .new-product-item .new-product-img{
+    margin-top: 50px;
+}
+
+.new-product-area .new-product-item .new-product-price span{
+    display: block;
+    font-size: 35px;
+    margin: 50px 0 20px;
+}
+
+
+/* End New Product Style */
+
+/* Strart Footer Style */ 
+
+.footer-area{
+    background-color: #0d0d1f;
+    color: #FFF;
+}
+
+.footer-area .footer-content{
+    padding: 60px 0;
+}
+.footer-area .footer-content h2{
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 400;
+}
+.footer-area .footer-content p{
+    margin: 25px 0;
+    letter-spacing: 1px;
+}
+.footer-area .footer-content input{
+    width: 300px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: none;
+    padding: 0 10px;
+}
+
+.footer-area .footer-content button{
+    border: 1px solid #71cd14;
+    background-color: #71cd14;
+    color: #FFF;
+    text-transform: uppercase;
+    padding: 8px 25px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    margin-left: -35px;
+}
+
+.footer-area .footer-content button:hover{
+    opacity: 70%;
+}
+
+
+.footer-area .footer-content .terms{ 
+    display: block;
+    margin: 60px 0 0;
+    color: #FFF;
+}
+
+/* End Footer Style */
+/* Start Login Style */
+.login-area{
+    margin: 100px 0;
+}
+/* End Login Style */
