@@ -3,13 +3,11 @@
     margin: 0;
     padding: 0;
 }
-
 body{
     line-height: 24px;
     font-size: 14px;
     font-family: "Roboto", sans-serif;
     font-weight: normal;
-    color: #797979;
     text-transform: capitalize;
 }
 .main-title{
@@ -85,7 +83,7 @@ body{
     font-size: 13px;
     font-weight: 400;
     line-height: 80px;
-    color: #2a2a2a;
+    color: #999;
     padding: 0px;
     font-family: Heebo, sans-serif;
     transition: all .3s ease-in-out;
@@ -103,6 +101,11 @@ body{
 }
 .header-area .navbar .navbar-right .nav-item .nav-link{
     font-size: 17px;
+    position: relative;
+    color: #999;
+}
+
+.header-area .navbar .navbar-right .nav-item .fa{
     color: #999;
 }
 
@@ -280,6 +283,7 @@ body{
     color: #999999;
     font-size: 14px;
     transition: all .3s ease-in-out;
+    pos
 }
 
 .banner-area .banner-content .banner-links .item-link:hover{
@@ -295,16 +299,84 @@ body{
 .banner-area .banner-content .banner-links .item-link:last-child::after{
     display: none;
 }
+
+
+
+/* End Home Banner Style */
+.cart[data-count]:after{    position: absolute;
+    right: -60%;
+    top: 25%;
+    content: attr(data-count);
+    font-size: 11px;
+    padding: 2px 4px;
+    border-radius: 50%;
+    line-height: 1em;
+    color: white;
+    background: rgba(255,0,0,.85);
+    text-align: center;
+    min-width: 1em;
+  }
+/* Start login and Register Style */
 .login a{
     display: inline-block;
+    text-transform: capitalize !important;
     font-size: 14px !important;    
 }
 .login span{
     color: #71cd14;   
     text-transform: lowercase;
 }
+/* end login and register style */
+/* Strart Footer Style */ 
+
+.footer-area{
+    background-color: #0d0d1f;
+    color: #FFF;
+}
+
+.footer-area .footer-content{
+    padding: 60px 0;
+}
+.footer-area .footer-content h2{
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 400;
+}
+.footer-area .footer-content p{
+    margin: 25px 0;
+    letter-spacing: 1px;
+}
+.footer-area .footer-content input{
+    width: 300px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: none;
+    padding: 0 10px;
+}
+
+.footer-area .footer-content button{
+    border: 1px solid #71cd14;
+    background-color: #71cd14;
+    color: #FFF;
+    text-transform: uppercase;
+    padding: 8px 25px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    margin-left: -35px;
+}
+
+.footer-area .footer-content button:hover{
+    opacity: 70%;
+}
 
 
+.footer-area .footer-content .terms{ 
+    display: block;
+    margin: 60px 0 0;
+    color: #FFF;
+}
 
-/* End Home Banner Style */
+/* End Footer Style */
 /* End Global Style */

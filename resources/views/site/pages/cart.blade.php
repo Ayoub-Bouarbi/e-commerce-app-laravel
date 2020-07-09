@@ -27,7 +27,17 @@
 <section class="cart-banner-area">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-sm-12">
+                @if (Session::has('message'))
+                    <p class="alert alert-success">{{ Session::get('message') }}</p>
+                @endif
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-9">
+                @if (\Cart::isEmpty())      
+                    <p class="alert alert-warning">Your shopping cart is empty.</p>
+                @else
                 <div class="card">
                     <div class="table-responsive ">
                         <table class="table table-hover w-100">
@@ -40,86 +50,45 @@
                                 </tr>
                             </thead>
                             <tbody class="t-body">
+                                @foreach (\Cart::getContent() as $item)        
                                 <tr>
                                     <td>
                                         <figure class="media">
                                             <div class="img-wrap">
-                                                <img src="./img/product/single-product/s-product-1.jpg" alt="">
+                                                @if (!empty($item->image))
+                                                    <img src="{{ asset('storage/'.$item->image) }}" alt="">
+                                                @else
+                                                    <img src="{{ asset('img/product/single-product/s-product-1.jpg') }}" alt="">
+                                                @endif
                                             </div>
                                             <figcaption class="media-content">
-                                                <h5>Product Name Goes Here</h5>
-                                                <p><span>Size :</span> XXL</p>
-                                                <p><span>Color :</span> Orange Color</p>
+                                                <h5>{{ $item->name }}</h5>
+                                                @foreach ($item->attributes as $key => $value)
+                                                    <p>
+                                                        <span>{{ $key }} :</span> {{ $value }}
+                                                    </p>
+                                                @endforeach
                                             </figcaption>
                                         </figure>
                                     </td>
                                     <td class="qty">
-                                        <input type="number" name="qty" min="1" value="1" id="qty" />
+                                        <span class="qty">{{ $item->quantity  }}</span>
                                     </td>
                                     <td class="price">
-                                        <span>$145</span>
-                                        <span>($5 each)</span>
+                                        <span>{{ config('settings.currency_symbol'). $item->price }} each</span>
                                     </td>
                                     <td>
                                         <button class="g-btn"><i class="fa fa-heart"></i></button>
-                                        <button class="r-btn"><i class="fa fa-close"></i> Remove</button>
+                                        <a href="{{ route('checkout.cart.remove', $item->id) }}" class="r-btn"><i class="fa fa-close"></i> Remove</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap">
-                                                <img src="./img/product/single-product/s-product-1.jpg" alt="">
-                                            </div>
-                                            <figcaption class="media-content">
-                                                <h5>Product Name Goes Here</h5>
-                                                <p><span>Size :</span> XXL</p>
-                                                <p><span>Color :</span> Orange Color</p>
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td class="qty">
-                                        <input type="number" name="qty" min="1" value="1" id="qty" />
-                                    </td>
-                                    <td class="price">
-                                        <span>$145</span>
-                                        <span>($5 each)</span>
-                                    </td>
-                                    <td>
-                                        <button class="g-btn"><i class="fa fa-heart"></i></button>
-                                        <button class="r-btn"><i class="fa fa-close"></i> Remove</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap">
-                                                <img src="./img/product/single-product/s-product-1.jpg" alt="">
-                                            </div>
-                                            <figcaption class="media-content">
-                                                <h5>Product Name Goes Here</h5>
-                                                <p><span>Size :</span> XXL</p>
-                                                <p><span>Color :</span> Orange Color</p>
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td class="qty">
-                                        <input type="number" name="qty" min="1" value="1" id="qty" />
-                                    </td>
-                                    <td class="price">
-                                        <span>$145</span>
-                                        <span>($5 each)</span>
-                                    </td>
-                                    <td>
-                                        <button class="g-btn"><i class="fa fa-heart"></i></button>
-                                        <button class="r-btn"><i class="fa fa-close"></i> Remove</button>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <button class="g-btn c-shopping">Continue Shopping</button>
+                @endif
+                <a href="{{ route('category.index') }}" class="g-btn c-shopping">Continue Shopping</a>
             </div>
             <div class="col-md-3">
                 <aside class="p-checkout">
@@ -127,9 +96,9 @@
                         Add USD 5.00 of eligible items to your order to qualify for FREE Shipping.
                     </p>
                     <div class="price">
-                        <p>Total Price : <span>$580</span></p>
+                        <p>Total Price : <span>$1321</span></p>
                         <p>Discount : <span>$600</span></p>
-                        <p>Total : <span>$1200</span></p>
+                        <p>Total : <span>{{ config('settings.currency_symbol') }}{{ \Cart::getSubTotal() }}</span></p>
                     </div>
                     <hr>
                     <div>
@@ -151,7 +120,7 @@
                             </div>
                         </figure>
                     </div>
-                    <button class="g-btn p-checkout-btn">Proceed to checkout</button>
+                    <a href="#" class="g-btn p-checkout-btn">Proceed to checkout</a>
                 </aside>
             </div>
         </div>

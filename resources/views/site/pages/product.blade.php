@@ -28,53 +28,94 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="product-img">
-                    <img src="./img/product/single-product/s-product-1.jpg" alt="Product Image" />
-                </div>
+                <div class="s_product_img">
+                    <div
+                      id="carouselExampleIndicators"
+                      class="carousel slide"
+                      data-ride="carousel"
+                    >
+                      <ol class="carousel-indicators">
+                        @forelse ($product->images as $image) 
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+                            <img src="{{ asset('storage/'.$image->full) }}" alt="" />
+                        </li>
+                        @empty     
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+                            <img src="{{ asset('img/product/single-product/s-product-s-2.jpg') }}" alt="" />
+                        </li>
+                        @endforelse
+                      </ol>
+                      <div class="carousel-inner">
+                          @forelse ($product->images as $image)
+                          <div class="carousel-item active">
+                            <img class="d-block w-100" src="{{ asset('storage/'.$image->full) }}" alt="First slide" />
+                          </div>
+                          @empty
+                          <div class="carousel-item active">
+                            <img class="d-block w-100" src="{{ asset('img/product/single-product/s-product-1.jpg') }}" alt="First slide" />
+                          </div>
+                          @endforelse
+                      </div>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-6">
                 <div class="product-detail-content">
-                    <h3>Thoshiba</h3>
-                    <h1>Faded Sky Blue Denim Jeans</h1>
-                    <span>$179.99</span>
-                    <p>Category : <a href="#">Household</a></p>
+                    <h3>{{ $product->brand->name }}</h3>
+                    <h1>{{ $product->name }}</h1> 
+                    @if ($product->sale_price > 0)
+                        <span class="num" id="productPrice">{{config('settings.currency_symbol') . $product->sale_price }}</span>
+                        <del class="price-old">{{config('settings.currency_symbol') . $product->price }}</del>
+                    @else
+                        <span class="num" id="productPrice">{{ config('settings.currency_symbol') . $product->price }}</span>
+                    @endif
+                    <p>
+                        Category : 
+                        @foreach ($product->categories as $category)
+                        <a href="#">
+                             {{ $category->name }}
+                        </a>
+                        @endforeach 
+                    </p>
                     <p>Availivility : <span>In Stock</span></p>
                     <hr />
                     <p>
-                        Mill Oil is an innovative oil filled radiator with the most modern technology. If you are
-                        looking for something that can make your interior look awesome, and at the same time give
-                        you the pleasant warm feeling during the winter.
+                        {!! $product->description !!}
                     </p>
-                    <div>
+                    <form action="{{ route('product.add.cart') }}" method="POST" role="form" id="addToCart">
+                        @csrf
                         <div class="form-group">
                             <div class="row">
+                                @foreach ($attributes as $attribute) 
                                 <div class="col-md-6">
-                                    <select class="form-control" name="size" id="size">
-                                        <option value="x">Size : X</option>
-                                        <option value="xl">Size : XL</option>
-                                        <option value="m">Size : M</option>
-                                        <option value="s">Size : S</option>
-                                    </select>
+                                    <span>{{ $attribute->name }}: </span>
+                                    @php $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray()) @endphp
+                                    @if ($attributeCheck)
+                                        <select class="form-control option" name="{{ strtolower($attribute->name ) }}" id="{{ strtolower($attribute->name ) }}">
+                                            @foreach ($product->attributes as $attributeValue)
+                                                @if ($attributeValue->attribute_id == $attribute->id)
+                                                <option
+                                                    data-price="{{ $attributeValue->price }}"
+                                                    value="{{ $attributeValue->value }}"> {{ ucwords($attributeValue->value . ' +'. $attributeValue->price) }}
+                                                </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
-                                <div class="col-md-6">
-
-                                    <select class="form-control" name="size" id="size">
-                                        <option value="White">Color : White</option>
-                                        <option value="Black">Color : Black</option>
-                                        <option value="Red">Color : Red</option>
-                                        <option value="Blue">Color : Blue</option>
-                                    </select>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Quantity : </label>
-                            <input type="number" class="form-control" name="qty" min="1" value="1" id="qty" />
+                            <input type="number" class="form-control" name="qty" min="1"max="{{ $product->quantity }}" value="1" id="qty" />
+                            <input type="hidden" name="productId" value="{{ $product->id }}">
+                            <input type="hidden" name="price" id="finalPrice" value="{{ $product->sale_price != '' ? $product->sale_price : $product->price }}">
+                            <input type="hidden" name="image" id="image" value="{{ $product->images->count() > 0 ? $product->images->first()->full : '' }}">
                         </div>
-                    </div>
-
-                    <button class="g-btn">Add to cart</button>
-                    <button class="heart-btn"><i class="fa fa-heart"></i></button>
+                        <button type="submit" class="g-btn">Add to cart</button>
+                        <button class="heart-btn"><i class="fa fa-heart"></i></button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -85,24 +126,8 @@
             </div>
             <div class="tabcontent" id="description">
                 <p>
-                    Beryl Cook is one of Britain’s most talented and amusing artists .Beryl’s pictures feature women
-                    of all shapes and sizes enjoying themselves .Born between the two world wars, Beryl Cook
-                    eventually left Kendrick School in Reading at the age of 15, where she went to secretarial
-                    school and then into an insurance office. After moving to London and then Hampton, she
-                    eventually married her next door neighbour from Reading, John Cook. He was an officer in the
-                    Merchant Navy and after he left the sea in 1956, they bought a pub for a year before John took a
-                    job in Southern Rhodesia with a motor company. Beryl bought their young son a box of
-                    watercolours, and when showing him how to use it, she decided that she herself quite enjoyed
-                    painting. John subsequently bought her a child’s painting set for her birthday and it was with
-                    this that she produced her first significant work, a half-length portrait of a dark-skinned lady
-                    with a vacant expression and large drooping breasts. <br>
-                    It was aptly named ‘Hangover’ by Beryl’s husband and
-                    It is often frustrating to attempt to plan meals that are designed for one. Despite this fact,
-                    we are seeing more and more recipe books and Internet websites that are dedicated to the act of
-                    cooking for one. Divorce and the death of spouses or grown children leaving for college are all
-                    reasons that someone accustomed to cooking for more than one would suddenly need to learn how to
-                    adjust all the cooking practices utilized before into a streamlined plan of cooking that is more
-                    efficient for one person creating less</p>
+                    {{ $product->description }}    
+                </p>
             </div>
             <div class="tabcontent" id="specification">
                 <div class="table-responsive">
@@ -235,4 +260,24 @@
 @endsection
 @push('styles')
     <link rel="stylesheet" href="{{ asset("frontend/css/product-details.css") }}">
+@endpush
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#addToCart').submit(function (e) {
+                if ($('.option').val() == 0) {
+                    e.preventDefault();
+                    alert('Please select an option');
+                }
+            });
+            $('.option').change(function () {
+                $('#productPrice').html("{{ $product->sale_price != '' ? $product->sale_price : $product->price }}");
+                let extraPrice = $(this).find(':selected').data('price');
+                let price = parseFloat($('#productPrice').html());
+                let finalPrice = (Number(extraPrice) + price).toFixed(2);
+                $('#finalPrice').val(finalPrice);
+                $('#productPrice').html(finalPrice);
+            });
+        });
+    </script>
 @endpush

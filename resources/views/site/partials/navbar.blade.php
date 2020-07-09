@@ -3,7 +3,7 @@
         <nav class="navbar navbar-expand-lg navbar-light w-100">
             <div class="container">
                 <a href="index.html">
-                    <img src="./img/logo.png" alt="logo">
+                    <img src="{{ asset('storage/' . config('settings.site_logo')) }}" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav"
                     aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,10 +15,10 @@
                         <div class="col-md-7 pr-0">
                             <ul class="nav navbar-nav float-right">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Home</a>
+                                    <a class="nav-link" href="{{ route('home') }}">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Category</a>
+                                    <a class="nav-link" href="{{ route('category.index') }}">Category</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Bolg</a>
@@ -34,7 +34,10 @@
                                     <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="nav-link" href="{{ route('checkout.cart') }}">
+                                        <span class="cart" data-count="{{ $cartCount }}"></span>
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
                                 </li>
                                 @guest
                                     <li class="nav-item login">
