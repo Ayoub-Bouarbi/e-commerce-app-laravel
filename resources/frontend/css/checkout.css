@@ -72,18 +72,18 @@
     font-size: 12px;
     display: inline-block;
     position: relative;
-    margin-left: 10px;
+    margin-left: 17px;
 }
 .checkout-area .terms input{
     position: absolute;
-    top: 3px;
+    top: 5px;
     left: -16px;
 }
 .checkout-area .terms a{
     color: #71cd14;
 }
 .checkout-area .c-btn{
-    font-size: 12px;
+    font-size: 11px;
     float: right;
     padding: 10px 10px;
     width: 100%;

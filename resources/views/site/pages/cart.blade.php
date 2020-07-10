@@ -120,7 +120,7 @@
                             </div>
                         </figure>
                     </div>
-                    <a href="#" class="g-btn p-checkout-btn">Proceed to checkout</a>
+                    <a href="{{ route('checkout.index') }}" class="g-btn p-checkout-btn">Proceed to checkout</a>
                 </aside>
             </div>
         </div>
