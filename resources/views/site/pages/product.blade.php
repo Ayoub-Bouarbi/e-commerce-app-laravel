@@ -1,283 +1,243 @@
 @extends('site.app')
-@section('title',"Product Details")
+@section('title',"Product Detail")
+
 @section('content')
 
-<!--========================== Start Home Banner Area =================================-->
-
-<section class="banner-area">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
     <div class="container">
-        <div class="banner-content">
-            <div class="banner-title float-left">
-                <h2>Product Details</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div class="banner-links float-right">
-                <a class="item-link" href="">Home</a>
-                <a class="item-link" href="">Product Details</a>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Vegetable’s Package</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ route('home') }}">Home</a>
+                        {{-- <a href="{{ route('category.show',$category->name) }}">Vegetables</a> --}}
+                        <span>Vegetable’s Package</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Breadcrumb Section End -->
 
-
-<!--========================== End Home Banner Area =================================-->
-
-<!--========================== End Product Details Area =================================-->
-
-<section class="product-detail-area">
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <div class="s_product_img">
-                    <div
-                      id="carouselExampleIndicators"
-                      class="carousel slide"
-                      data-ride="carousel"
-                    >
-                      <ol class="carousel-indicators">
-                        @forelse ($product->images as $image) 
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
-                            <img src="{{ asset('storage/'.$image->full) }}" alt="" />
-                        </li>
-                        @empty     
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
-                            <img src="{{ asset('img/product/single-product/s-product-s-2.jpg') }}" alt="" />
-                        </li>
-                        @endforelse
-                      </ol>
-                      <div class="carousel-inner">
-                          @forelse ($product->images as $image)
-                          <div class="carousel-item active">
-                            <img class="d-block w-100" src="{{ asset('storage/'.$image->full) }}" alt="First slide" />
-                          </div>
-                          @empty
-                          <div class="carousel-item active">
-                            <img class="d-block w-100" src="{{ asset('img/product/single-product/s-product-1.jpg') }}" alt="First slide" />
-                          </div>
-                          @endforelse
-                      </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large" src="{{ asset('storage/'.$product->images->first()->full) }}"
+                            alt="">
                     </div>
-                  </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        @foreach ($product->images as $image)
+                            <img data-imgbigurl="{{ asset('storage/'.$image->full) }}"
+                            src="{{ asset('storage/'.$image->full) }}" alt="">
+                        @endforeach
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="product-detail-content">
-                    <h3>{{ $product->brand->name }}</h3>
-                    <h1>{{ $product->name }}</h1> 
-                    @if ($product->sale_price > 0)
-                        <span class="num" id="productPrice">{{config('settings.currency_symbol') . $product->sale_price }}</span>
-                        <del class="price-old">{{config('settings.currency_symbol') . $product->price }}</del>
-                    @else
-                        <span class="num" id="productPrice">{{ config('settings.currency_symbol') . $product->price }}</span>
-                    @endif
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>{{ Str::ucfirst($product->name) }}</h3>
+                    <div class="product__details__rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                        <span>(18 reviews)</span>
+                    </div>
+                    <div class="product__details__price">{{ config('settings.currency_symbol').$product->price }}</div>
                     <p>
-                        Category : 
-                        @foreach ($product->categories as $category)
-                        <a href="#">
-                             {{ $category->name }}
-                        </a>
-                        @endforeach 
+                        {{ $product->description }}
                     </p>
-                    <p>Availivility : <span>In Stock</span></p>
-                    <hr />
-                    <p>
-                        {!! $product->description !!}
-                    </p>
-                    <form action="{{ route('product.add.cart') }}" method="POST" role="form" id="addToCart">
-                        @csrf
-                        <div class="form-group">
-                            <div class="row">
-                                @foreach ($attributes as $attribute) 
-                                <div class="col-md-6">
-                                    <span>{{ $attribute->name }}: </span>
-                                    @php $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray()) @endphp
-                                    @if ($attributeCheck)
-                                        <select class="form-control option" name="{{ strtolower($attribute->name ) }}" id="{{ strtolower($attribute->name ) }}">
-                                            @foreach ($product->attributes as $attributeValue)
-                                                @if ($attributeValue->attribute_id == $attribute->id)
-                                                <option
-                                                    data-price="{{ $attributeValue->price }}"
-                                                    value="{{ $attributeValue->value }}"> {{ ucwords($attributeValue->value . ' +'. $attributeValue->price) }}
-                                                </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    @endif
-                                </div>
-                                @endforeach
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <input type="text" value="1">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Quantity : </label>
-                            <input type="number" class="form-control" name="qty" min="1"max="{{ $product->quantity }}" value="1" id="qty" />
-                            <input type="hidden" name="productId" value="{{ $product->id }}">
-                            <input type="hidden" name="price" id="finalPrice" value="{{ $product->sale_price != '' ? $product->sale_price : $product->price }}">
-                            <input type="hidden" name="image" id="image" value="{{ $product->images->count() > 0 ? $product->images->first()->full : '' }}">
-                        </div>
-                        <button type="submit" class="g-btn">Add to cart</button>
-                        <button class="heart-btn"><i class="fa fa-heart"></i></button>
-                    </form>
+                    </div>
+                    <a type="submit" class="primary-btn">ADD TO CARD</a>
+                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    <ul>
+                        <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+                        <li><b>Weight</b> <span>{{ $product->weight }} kg</span></li>
+                        <li><b>SKU</b> <span>{{ $product->sku }}</span></li>
+                        <li><b>Share on</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="product-description-area">
-            <div class="tab-links">
-                <button class="tab-link" onclick="OpenTab(event,'description')">Description</button>
-                <button class="tab-link" onclick="OpenTab(event,'specification')">Specification</button>
-            </div>
-            <div class="tabcontent" id="description">
-                <p>
-                    {{ $product->description }}    
-                </p>
-            </div>
-            <div class="tabcontent" id="specification">
-                <div class="table-responsive">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>Width</td>
-                                <td>128mm</td>
-                            </tr>
-                            <tr>
-                                <td>Height</td>
-                                <td>508mm</td>
-                            </tr>
-                            <tr>
-                                <td>Depth</td>
-                                <td>85mm</td>
-                            </tr>
-                            <tr>
-                                <td>Weight</td>
-                                <td>52gm</td>
-                            </tr>
-                            <tr>
-                                <td>Quality Checking</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>Freshness Duration</td>
-                                <td>03 Days</td>
-                            </tr>
-                            <tr>
-                                <td>When Packeting</td>
-                                <td>Without Touch of Hand</td>
-                            </tr>
-                            <tr>
-                                <td>Each Box Contains</td>
-                                <td>60pcs</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                                aria-selected="false">Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                                aria-selected="false">Reviews <span>(1)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Vivamus
+                                    suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam
+                                    vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat,
+                                    accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a
+                                    pellentesque nec, egestas non nisi. Vestibulum ac diam sit amet quam vehicula
+                                    elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus
+                                    et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+                                    vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
+                                    Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed
+                                    porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum
+                                    sed sit amet dui. Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                    sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                    eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                    sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                                    diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                    Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                    Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                    sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                    eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                    sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                                    diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                    Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                    Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Product Details Section End -->
 
-
-<!--========================== End Product Details Area =================================-->
-
-
-<!--========================== Start Related Product Area =================================-->
-
-
+<!-- Related Product Section Begin -->
 <section class="related-product">
     <div class="container">
-        <div class="title">
-            <h1>Related Product</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Related Product</h2>
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product/feature-product/f-p-3.jpg" alt="img">
-                        <div class="product-links">
-                            <a class="item-link"><i class="fa fa-eye"></i></a>
-                            <a class="item-link"><i class="fa fa-heart"></i></a>
-                            <a class="item-link"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
                     </div>
-                    <div class="product-content">
-                        <h5>men stylist smart watch</h5>
-                        <span>$25.00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product/feature-product/f-p-3.jpg" alt="img">
-                        <div class="product-links">
-                            <a class="item-link"><i class="fa fa-eye"></i></a>
-                            <a class="item-link"><i class="fa fa-heart"></i></a>
-                            <a class="item-link"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-content">
-                        <h5>men stylist smart watch</h5>
-                        <span>$25.00</span>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product/feature-product/f-p-3.jpg" alt="img">
-                        <div class="product-links">
-                            <a class="item-link"><i class="fa fa-eye"></i></a>
-                            <a class="item-link"><i class="fa fa-heart"></i></a>
-                            <a class="item-link"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
                     </div>
-                    <div class="product-content">
-                        <h5>men stylist smart watch</h5>
-                        <span>$25.00</span>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product/feature-product/f-p-3.jpg" alt="img">
-                        <div class="product-links">
-                            <a class="item-link"><i class="fa fa-eye"></i></a>
-                            <a class="item-link"><i class="fa fa-heart"></i></a>
-                            <a class="item-link"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
                     </div>
-                    <div class="product-content">
-                        <h5>men stylist smart watch</h5>
-                        <span>$25.00</span>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-<!--========================== End Related Product Area =================================-->
-
+<!-- Related Product Section End -->
 @endsection
-@push('styles')
-    <link rel="stylesheet" href="{{ asset("frontend/css/product-details.css") }}">
-@endpush
-@push('scripts')
-    <script>
-        $(document).ready(function () {
-            $('#addToCart').submit(function (e) {
-                if ($('.option').val() == 0) {
-                    e.preventDefault();
-                    alert('Please select an option');
-                }
-            });
-            $('.option').change(function () {
-                $('#productPrice').html("{{ $product->sale_price != '' ? $product->sale_price : $product->price }}");
-                let extraPrice = $(this).find(':selected').data('price');
-                let price = parseFloat($('#productPrice').html());
-                let finalPrice = (Number(extraPrice) + price).toFixed(2);
-                $('#finalPrice').val(finalPrice);
-                $('#productPrice').html(finalPrice);
-            });
-        });
-    </script>
-@endpush

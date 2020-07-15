@@ -61,6 +61,11 @@ Route::group(['prefix'  =>  'admin','namespace' => 'Admin'], function () {
         
         });
 
+        Route::group(['prefix' => 'orders'], function () {
+            Route::get('/', 'OrderController@index')->name('admin.orders.index');
+            Route::get('/{order}/show', 'OrderController@show')->name('admin.orders.show');
+         });
+         
         Route::group(['prefix' => 'products'], function () {
 
             Route::get('/', 'ProductController@index')->name('admin.products.index');
@@ -68,9 +73,8 @@ Route::group(['prefix'  =>  'admin','namespace' => 'Admin'], function () {
             Route::post('/store', 'ProductController@store')->name('admin.products.store');
             Route::get('/edit/{id}', 'ProductController@edit')->name('admin.products.edit');
             Route::post('/update', 'ProductController@update')->name('admin.products.update');
-            Route::post('images/upload', 'Admin\ProductImageController@upload')->name('admin.products.images.upload');
-            Route::get('images/{id}/delete', 'Admin\ProductImageController@delete')->name('admin.products.images.delete');
-
+            Route::post('images/upload', 'ProductImageController@upload')->name('admin.products.images.upload');
+            Route::get('images/{id}/delete', 'ProductImageController@delete')->name('admin.products.images.delete');
 
             // Load attributes on the page load
             Route::get('attributes/load', 'ProductAttributeController@loadAttributes');

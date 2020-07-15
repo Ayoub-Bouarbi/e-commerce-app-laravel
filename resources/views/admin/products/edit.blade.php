@@ -1,7 +1,7 @@
 @extends('admin.app')
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/js/plugins/dropzone/dist/min/dropzone.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('backend/js/plugins/dropzone/dist/min/dropzone.min.css') }}" />
 @endsection
 
 @section('title') {{ $pageTitle }} @endsection
@@ -12,7 +12,7 @@
     </div>
 </div>
 @include('admin.partials.flash')
-<div class="row user">
+<div class="row user" id="editProduct">
     <div class="col-md-3">
         <div class="tile p-0">
             <ul class="nav flex-column nav-tabs user-tabs">
@@ -110,7 +110,7 @@
                                         <input class="form-control" type="text"
                                             placeholder="Enter product special price" id="special_price"
                                             name="special_price"
-                                            value="{{ old('special_price', $product->special_price) }}" />
+                                            value="{{ old('special_price', $product->special_price > 0 ? $product->special_price : 0) }}" />
                                     </div>
                                 </div>
                             </div>
@@ -175,22 +175,7 @@
                     <h3 class="tile-title">Upload Image</h3>
                     <hr>
                     <div class="tile-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form action="" class="dropzone" id="dropzone"
-                                    style="border: 2px dashed rgba(0,0,0,0.3)">
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    {{ csrf_field() }}
-                                </form>
-                            </div>
-                        </div>
-                        <div class="row d-print-none mt-2">
-                            <div class="col-12 text-right">
-                                <button class="btn btn-success" type="button" id="uploadButton">
-                                    <i class="fa fa-fw fa-lg fa-upload"></i>Upload Images
-                                </button>
-                            </div>
-                        </div>
+                        <image-upload product-id="{{ $product->id }}" url="{{ route('admin.products.images.upload') }}"></image-upload>
                         @if ($product->images)
                         <hr>
                         <div class="row">
@@ -222,50 +207,13 @@
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('backend/js/plugins/select2.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('backend/js/plugins/dropzone.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('backend/js/plugins/bootstrap-notify.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('backend/js/app.js') }}"></script>
 <script>
-    Dropzone.autoDiscover = false;
 
-    $( document ).ready(function() {
+    $(document).ready(function () {
         $('#categories').select2();
-
-        let myDropzone = new Dropzone("#dropzone", {
-            paramName: "image",
-            addRemoveLinks: false,
-            maxFilesize: 4,
-            parallelUploads: 2,
-            uploadMultiple: false,
-            url: "{{ route('admin.products.images.upload') }}",
-            autoProcessQueue: false,
-        });
-        myDropzone.on("queuecomplete", function (file) {
-            window.location.reload();
-            showNotification('Completed', 'All product images uploaded', 'success', 'fa-check');
-        });
-        $('#uploadButton').click(function(){
-            if (myDropzone.files.length === 0) {
-                showNotification('Error', 'Please select files to upload.', 'danger', 'fa-close');
-            } else {
-                myDropzone.processQueue();
-            }
-        });
-        function showNotification(title, message, type, icon)
-        {
-            $.notify({
-                title: title + ' : ',
-                message: message,
-                icon: 'fa ' + icon
-            },{
-                type: type,
-                allow_dismiss: true,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-            });
-        }
     });
+
 </script>
 @endpush

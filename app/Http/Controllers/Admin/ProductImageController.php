@@ -21,8 +21,7 @@ class ProductImageController extends Controller
 
     public function upload(Request $request)
     {
-        $product = $this->productRepository->findProductById($request->product_id);
-
+        $product = $this->productRepository->findProductById($request->productId);
         if ($request->has('image')) {
 
             $image = $this->uploadOne($request->image, 'products');

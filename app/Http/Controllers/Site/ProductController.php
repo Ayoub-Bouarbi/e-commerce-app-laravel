@@ -22,17 +22,24 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = $this->productContract->findProductBySlug($slug);
+        $product = $this->productContract->findProductBySlug($slug);
         $attributes = $this->attributeContract->listAttributes();
 
         return view('site.pages.product', compact('product', 'attributes'));
     }
     public function addToCart(Request $request)
     {   
-        // dd($request);
         $product = $this->productContract->findProductById($request->input('productId'));
-        $options = $request->except('_token', 'productId', 'price', 'qty','image');
+        $options = $request->except('_token', 'productId', 'price', 'qty');
     
-        Cart::add(uniqid(), $product->name, $request->input('price'), $request->input('qty'), $options);
+        Cart::add([
+            'id' => uniqid(),
+            'name' => $product->name, 
+            'image' => $product->images->first()->full ,
+            'price' =>$request->input('price'), 
+            'qty' => $request->input('qty'),
+            $options
+        ]);
     
         return redirect()->back()->with('message', 'Item added to cart successfully.');
     }

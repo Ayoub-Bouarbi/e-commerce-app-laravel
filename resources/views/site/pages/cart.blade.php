@@ -1,134 +1,115 @@
 @extends('site.app')
+
 @section('title',"Cart")
+
 @section('content')
 
-<!--========================== Start Home Banner Area =================================-->
-
-<section class="banner-area">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
     <div class="container">
-        <div class="banner-content">
-            <div class="banner-title float-left">
-                <h2>Cart</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div class="banner-links float-right">
-                <a class="item-link" href="">Home</a>
-                <a class="item-link" href="">Cart</a>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Shopping Cart</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ route('home') }}">Home</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Breadcrumb Section End -->
 
-
-<!--========================== End Home Banner Area =================================-->
-
-<!--========================== Start Cart Banner Area =================================-->
-
-<section class="cart-banner-area">
-    <div class="container-fluid">
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
         <div class="row">
             <div class="col-sm-12">
                 @if (Session::has('message'))
-                    <p class="alert alert-success">{{ Session::get('message') }}</p>
+                <p class="alert alert-success">{{ Session::get('message') }}</p>
                 @endif
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9">
-                @if (\Cart::isEmpty())      
-                    <p class="alert alert-warning">Your shopping cart is empty.</p>
+            <div class="col-lg-12">
+                @if (Cart::isEmpty())
+                <p class="alert alert-warning">Your shopping cart is empty.</p>
                 @else
-                <div class="card">
-                    <div class="table-responsive ">
-                        <table class="table table-hover w-100">
-                            <thead class="t-head text-muted">
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="t-body">
-                                @foreach (\Cart::getContent() as $item)        
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap">
-                                                @if (!empty($item->image))
-                                                    <img src="{{ asset('storage/'.$item->image) }}" alt="">
-                                                @else
-                                                    <img src="{{ asset('img/product/single-product/s-product-1.jpg') }}" alt="">
-                                                @endif
-                                            </div>
-                                            <figcaption class="media-content">
-                                                <h5>{{ $item->name }}</h5>
-                                                @foreach ($item->attributes as $key => $value)
-                                                    <p>
-                                                        <span>{{ $key }} :</span> {{ $value }}
-                                                    </p>
-                                                @endforeach
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td class="qty">
-                                        <span class="qty">{{ $item->quantity  }}</span>
-                                    </td>
-                                    <td class="price">
-                                        <span>{{ config('settings.currency_symbol'). $item->price }} each</span>
-                                    </td>
-                                    <td>
-                                        <button class="g-btn"><i class="fa fa-heart"></i></button>
-                                        <a href="{{ route('checkout.cart.remove', $item->id) }}" class="r-btn"><i class="fa fa-close"></i> Remove</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Cart::getContent() as $item)
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="{{ asset('storage/' . $item->full) }}" alt="">
+                                    <h5>{{ $item->name }}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    {{ config('settings.currency_symbol') . $item->price }}
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    $110.00
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <a href="{{ route('checkout.cart.remove',$item->id) }}" class="icon_close"></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
                 @endif
-                <a href="{{ route('category.index') }}" class="g-btn c-shopping">Continue Shopping</a>
             </div>
-            <div class="col-md-3">
-                <aside class="p-checkout">
-                    <p>
-                        Add USD 5.00 of eligible items to your order to qualify for FREE Shipping.
-                    </p>
-                    <div class="price">
-                        <p>Total Price : <span>$1321</span></p>
-                        <p>Discount : <span>$600</span></p>
-                        <p>Total : <span>{{ config('settings.currency_symbol') }}{{ \Cart::getSubTotal() }}</span></p>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="{{ route('category.index') }}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                        Upadate Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                        </form>
                     </div>
-                    <hr>
-                    <div>
-                        <figure class="itemside mb-3">
-                            <aside>
-                                <img src="./img/pay-visa.png" alt="pay visa" />
-                            </aside>
-                            <div class="text-wrap small text-muted ml-2">
-                                Pay 84.78 AED ( Save 14.97 AED ) By using ADCB Cards
-                            </div>
-                        </figure>
-                        <figure class="itemside mb-3">
-                            <aside>
-                                <img src="./img/pay-mastercard.png" alt="pay visa" />
-                            </aside>
-                            <div class="text-wrap small text-muted ml-2">
-                                Pay by MasterCard and Save 40%.
-                                Lorem ipsum dolo
-                            </div>
-                        </figure>
-                    </div>
-                    <a href="{{ route('checkout.index') }}" class="g-btn p-checkout-btn">Proceed to checkout</a>
-                </aside>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span>{{ config('settings.currency_symbol') . Cart::getSubTotal() }}</span></li>
+                        <li>Total <span>{{ config('settings.currency_symbol') . Cart::getTotal() }}</span></li>
+                    </ul>
+                    <a href="{{ route('checkout.index') }}" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-<!--========================== End Cart Banner Area =================================-->
+<!-- Shoping Cart Section End -->
 @endsection
-@push('styles')
-    <link rel="stylesheet" href="{{ asset("frontend/css/cart.css") }}">
-@endpush

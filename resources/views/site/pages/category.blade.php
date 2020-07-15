@@ -1,123 +1,242 @@
 @extends('site.app')
-@section('title',"Products")
+@section('title',"Shop")
 
 @section('content')
 
-<!--========================== Start Home Banner Area =================================-->
-
-<section class="banner-area">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
     <div class="container">
-        <div class="banner-content">
-            <div class="banner-title float-left">
-                <h2>Shop Category</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div class="banner-links float-right">
-                <a class="item-link" href="">Home</a>
-                <a class="item-link" href="">Shop</a>
-                <a class="item-link" href="">Women Fashion</a>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Organi Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ route('home') }}">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Breadcrumb Section End -->
 
-
-<!--========================== End Home Banner Area =================================-->
-
-<!--========================== Start Product Area =================================-->
-
-<section class="product-area">
+<!-- Product Section Begin -->
+<section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <aside class="browse-category">
-                    <h5>Browse Categories</h5>
-                    <ul class="menu">
-                        @foreach ($categories as $cat)
-                        @foreach ($cat->items as $category)
-                        <li>
-                            {{ $category->name }}
-                            @if($category->items->count() > 0)
-                                <ul>
-                                    @foreach ($category->items as $item)
-                                        <li><a href="{{ route('category.show',$item->slug) }}">{{ $item->name }}</a></li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                        @endforeach
-                    @endforeach 
-                    </ul>
-                </aside>
-                <aside class="browse-brand">
-                    <h5>Product Brand</h5>
-                    <ul class="menu-brand">
-                    @foreach ($brands as $brand)
-                        <li>
-                            <a href="#">{{ $brand->name }}</a>
-                        </li>
-                    @endforeach
-                    </ul>
-                </aside>
-            </div>
-            <div class="col-md-9">
-                <div class="filtering">
-                    <select name="" id="">
-                        <option value="">Default Sorting</option>
-                        <option value="">Default 01</option>
-                        <option value="">Default 02</option>
-                        <option value="">Default 03</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Show 12</option>
-                        <option value="">Show 20</option>
-                        <option value="">Show 30</option>
-                    </select>
-                </div>
-                <div class="row">
-                    @forelse ($products as $product)
-                    <div class="col-md-4">
-                        <div class="product-item">
-                            <div class="product-img">
-                                @if ($product->images->count() > 0)
-                                <div class="img-wrap padding-y"><img src="{{ asset('storage/'.$product->images->first()->full) }}" alt=""></div>
-                                @else
-                                    <div class="img-wrap padding-y"><img src="https://via.placeholder.com/176" alt=""></div>
-                                @endif
-                                <div class="product-links">
-                                    <a class="item-link" href="{{ route('product.show',$product->slug) }}"><i class="fa fa-eye"></i></a>
-                                    <a class="item-link"><i class="fa fa-heart"></i></a>
-                                    <a class="item-link"><i class="fa fa-shopping-cart"></i></a>
-                                </div>
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Department</h4>
+                        <ul>
+                            @foreach ($categories as $cat)
+                                @foreach ($cat->items as $category)
+                                    <li>
+                                        <a href="{{ route('category.show', $category->slug) }}">{{ Str::ucfirst($category->name) }}</a>
+                                    </li>
+                                @endforeach
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Price</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
-                            <div class="product-content">
-                                <h4>{{ $product->name }}</h4>
-                                @if ($product->sale_price != 0)
-                                <div class="price-wrap">
-                                    <span class="price"> {{ config('settings.currency_symbol').$product->sale_price }} </span>
-                                    <del class="price-old"> {{ config('settings.currency_symbol').$product->price }}</del>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
                                 </div>
-                                @else
-                                    <div class="price-wrap">
-                                        <span class="price"> {{ config('settings.currency_symbol').$product->price }} </span>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
-                    @empty
-                        <p>No Products found in .</p>
-                    @endforelse
+                    <div class="sidebar__item sidebar__item__color--option">
+                        <h4>Colors</h4>
+                        @foreach ($attributes as $attribute)
+                            @if($attribute->name == "Color")
+                                @foreach ($attribute->values as $value)
+                                    <div class="sidebar__item__color sidebar__item__color--{{ $value->value }}">
+                                        <label for="{{ $value->value }}">
+                                            {{ Str::ucfirst($value->value) }}
+                                            <input type="radio" name="color" id="{{ $value->value }}">
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Popular Size</h4>
+                        @foreach ($attributes as $attribute)
+                            @if ($attribute->name == "Size")    
+                                @foreach ($attribute->values as $value)
+                                    <div class="sidebar__item__size">
+                                        <label for="{{ $value->value }}">
+                                            {{ Str::ucfirst($value->value) }}
+                                            <input type="radio" name="size" id="{{ $value->value }}">
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="sidebar__item">
+                        <div class="latest-product__text">
+                            <h4>Latest Products</h4>
+                            <div class="latest-product__slider owl-carousel">
+                                <div class="latest-prdouct__slider__item">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="latest-prdouct__slider__item">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2>Sale Off</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            @foreach ($products as $product)
+                                @if ($product->sale_price > 0)
+                                    <div class="col-lg-4">
+                                        <div class="product__discount__item">
+                                            <div class="product__discount__item__pic set-bg"
+                                                data-setbg="{{ asset('storage/'.$product->images->first()->full) }}">
+                                                <div class="product__discount__percent">-20%</div>
+                                                <ul class="product__item__pic__hover">
+                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                    <li><a href="{{ route('product.add.cart') }}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="product__discount__item__text">
+                                                <span>{{ $product->category->name }}</span>
+                                                <h5><a href="{{ route('product.show',$product->slug) }}">Raisin’n’nuts</a></h5>
+                                                <div class="product__item__price">{{ config('settings.currency_symbol') . $product->sale_price }} <span>{{ config('settings.currency_symbol') . $product->price }}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                            <div class="filter__sort">
+                                <span>Sort By</span>
+                                <select>
+                                    <option value="0">Default</option>
+                                    <option value="0">Default</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>{{ $products->count() }}</span> Products found</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach ($products as $product)
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="{{ asset('storage/'.$product->images->first()->full) }}">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="{{ route('product.show',$product->slug) }}">{{ Str::ucfirst($product->name) }}</a></h6>
+                                <h5>{{ config('settings.currency_symbol') }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="product__pagination">
+                    <a href="#">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-<!--========================== End Product Area =================================-->
+<!-- Product Section End -->
 
 @endsection
-@push('styles')
-    <link rel="stylesheet" href="{{ asset("frontend/css/products.css") }}">
-@endpush

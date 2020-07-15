@@ -2,25 +2,24 @@
 @section('title',"Home")
 
 @section('content')
-<!--========================== Start Home Banner Area =================================-->
 
-<section class="banner-area">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
     <div class="container">
-        <div class="banner-content">
-            <div class="banner-title float-left">
-                <h2>Login</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div class="banner-links float-right">
-                <a class="item-link" href="">Home</a>
-                <a class="item-link" href="">Login</a>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Organi Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ route('home') }}">Home</a>
+                        <span>Login</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-
-<!--========================== End Home Banner Area =================================-->
+<!-- Breadcrumb Section End -->
 
 <section class="section-content bg padding-y">
     <div class="container">
@@ -61,7 +60,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success btn-block"> Login </button>
+                            <button type="submit" class="site-btn btn-block"> Login </button>
                         </div>
                     </form>
                 </article>

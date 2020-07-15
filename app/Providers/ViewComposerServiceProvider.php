@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,9 +25,9 @@ class ViewComposerServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        View::composer('site.partials.navbar', function ($view) {
-            $view->with('cartCount', Cart::getContent()->count());
+    {   
+        View::composer('site.partials.hero', function ($view) {
+            $view->with('categories', Category::orderByRaw('-name ASC')->get()->nest());
         });
     }
 }

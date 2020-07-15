@@ -6,8 +6,7 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-window.Vue = require('vue');
-
+window.Vue = require('vue');    
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -49,7 +48,7 @@ Vue.use(VueSwal);
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('attribute-values', require('./components/AttributeValues.vue').default);
 Vue.component('product-attributes', require('./components/ProductAttributes.vue').default);
-
+Vue.component('image-upload', require('./components/ImageUpload.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -57,5 +56,5 @@ Vue.component('product-attributes', require('./components/ProductAttributes.vue'
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
 });

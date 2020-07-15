@@ -1,17 +1,70 @@
-<!--========================== Start Header And Menu Area =================================-->
-<header class="header-area">
-    <section class="top-menu">
-        <div class="container">
-            <div class="float-left">
-                <p>Phone: +026444489</p>
-                <p>Email: info@gmail.com</p>
-            </div>
-            <div class="float-right">
-                <a href="">track order</a>
-                <a href="">contact us</a>
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                                <li>Free Shipping for all Order of $99</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                <img src="img/language.png" alt="">
+                                <div>English</div>
+                                <span class="arrow_carrot-down"></span>
+                                <ul>
+                                    <li><a href="#">Spanis</a></li>
+                                    <li><a href="#">English</a></li>
+                                </ul>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="{{ route('login') }}"><i class="fa fa-user"></i> Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-    @include('site.partials.navbar')
-</header>
-<!--========================== End Header And Menu Area =================================-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="{{ route('home') }}"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('category.index') }}">Shop</a></li>
+                            <li><a href="{{ route('contact') }}">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="{{ route('checkout.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ Cart::getContent()->count() }}</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">item: <span>{{ config('settings.currency_symbol') . Cart::getSubTotal() }}</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->

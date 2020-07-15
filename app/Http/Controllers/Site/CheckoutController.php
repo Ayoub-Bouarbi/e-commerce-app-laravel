@@ -29,12 +29,12 @@ class CheckoutController extends Controller
     {
         // Before storing the order we should implement the
         // request validation which I leave it to you
-        $order = $this->orderRepository->storeOrderDetails($request->all());
+        $order = $this->orderContract->storeOrderDetails($request->all());
 
         // You can add more control here to handle if the order
         // is not stored properly
         if ($order) {
-            $this->payPal->processPayment($order);
+            $this->paypal->processPayment($order);
         }
 
         return redirect()->back()->with('message','Order not placed');
@@ -44,7 +44,7 @@ class CheckoutController extends Controller
         $paymentId = $request->input('paymentId');
         $payerId = $request->input('PayerID');
 
-        $status = $this->payPal->completePayment($paymentId, $payerId);
+        $status = $this->paypal->completePayment($paymentId, $payerId);
 
         $order = Order::where('order_number', $status['invoiceId'])->first();
         $order->status = 'processing';
