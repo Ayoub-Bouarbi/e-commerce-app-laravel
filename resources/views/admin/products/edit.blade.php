@@ -62,11 +62,8 @@
                                             class="form-control @error('brand_id') is-invalid @enderror">
                                             <option value="0">Select a brand</option>
                                             @foreach($brands as $brand)
-                                            @if ($product->brand_id == $brand->id)
-                                            <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>
-                                            @else
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                            @endif
+                                            @php $check = $brand->id == $product->brand->id ? 'selected' : '' @endphp
+                                            <option value="{{ $brand->id }}" {{ $check }}>{{ $brand->name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback active">
@@ -80,10 +77,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label" for="categories">Categories</label>
-                                        <select name="categories[]" id="categories" class="form-control" multiple>
+                                        <select name="category_id" id="category_id" class="form-control @error('brand_id') is-invalid @enderror">
                                             @foreach($categories as $category)
-                                            @php $check = in_array($category->id,
-                                            $product->categories->pluck('id')->toArray()) ? 'selected' : ''@endphp
+                                            @php $check = $category->id == $product->category->id ? 'selected' : '' @endphp
                                             <option value="{{ $category->id }}" {{ $check }}>{{ $category->name }}
                                             </option>
                                             @endforeach

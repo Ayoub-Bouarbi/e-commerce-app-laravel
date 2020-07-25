@@ -20,10 +20,14 @@ Auth::routes();
 Route::get('/', 'Site\HomeController@index')->name("home");
 Route::get('/category/', 'Site\CategoryController@index')->name('category.index');
 Route::get('/category/{slug}', 'Site\CategoryController@show')->name('category.show');
+Route::post('/category/sort', 'Site\CategoryController@sort')->name('category.sort');
+Route::get('/product/search', 'Site\ProductController@search')->name('product.search');
 Route::get('/product/{slug}', 'Site\ProductController@show')->name('product.show');
 
 Route::post('/product/add/cart', 'Site\ProductController@addToCart')->name('product.add.cart');
+Route::post('/product/update/cart', 'Site\ProductController@updateCart')->name('product.update.cart');
 
+Route::get('/lang/{lang}', 'Site\LangController@setLang')->name('lang');
 Route::get('/cart', 'Site\CartController@getCart')->name('checkout.cart');
 Route::get('/cart/item/{id}/remove', 'Site\CartController@removeItem')->name('checkout.cart.remove');
 Route::get('/cart/clear', 'Site\CartController@clearCart')->name('checkout.cart.clear');

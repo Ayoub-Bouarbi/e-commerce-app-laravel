@@ -11,14 +11,12 @@ class HomeController extends Controller
 {
     public function index(){
 
-        $featuredProducts = Product::where('featured',1)
-                                    ->with('categories')
-                                    ->with('images')
-                                    ->get();
+        $featuredProducts = Product::where('featured',1)->with('images')->with('category')->get();
+        $newProducts = collect(Product::where('featured',1)->with('images')->with('category')->get())->chunk(3);
 
         $categories = Category::orderByRaw('-name ASC')->get()->nest();   
 
 
-        return view('site.pages.index',compact('featuredProducts','categories'));
+        return view('site.pages.index',compact('featuredProducts','categories','newProducts'));
     }
 }

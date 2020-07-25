@@ -16,7 +16,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'brand_id', 'sku', 'name', 'slug', 'description', 'quantity',
+        'brand_id','category_id', 'sku', 'name', 'slug', 'description', 'quantity',
         'weight', 'price', 'sale_price', 'status', 'featured',
     ];
 
@@ -26,6 +26,7 @@ class Product extends Model
     protected $casts = [
         'quantity'  =>  'integer',
         'brand_id'  =>  'integer',
+        'category_id'  =>  'integer',
         'status'    =>  'boolean',
         'featured'  =>  'boolean'
     ];
@@ -64,8 +65,8 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
+        return $this->belongsTo(Category::class);
     }
 }

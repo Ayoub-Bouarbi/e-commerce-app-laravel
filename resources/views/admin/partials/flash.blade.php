@@ -1,5 +1,5 @@
 @php
-    $errors = Session::get('error');
+    $errors = Session::get('errors');
     $messages = Session::get('success');
     $info = Session::get('info');
     $warnings = Session::get('warning');

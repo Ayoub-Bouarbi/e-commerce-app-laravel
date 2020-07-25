@@ -16,6 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('brand_id')->index();
+            $table->unsignedBigInteger('category_id')->index();
             $table->string('sku');
             $table->string('name');
             $table->string('slug');
@@ -28,6 +29,7 @@ class CreateProductsTable extends Migration
             $table->boolean('featured')->default(0);
 
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

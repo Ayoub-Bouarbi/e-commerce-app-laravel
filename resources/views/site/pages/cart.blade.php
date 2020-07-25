@@ -52,18 +52,24 @@
                             @foreach (Cart::getContent() as $item)
                             <tr>
                                 <td class="shoping__cart__item">
-                                    <img src="{{ asset('storage/' . $item->full) }}" alt="">
-                                    <h5>{{ $item->name }}</h5>
+                                    @if ($item->associatedModel->images->count() > 0)
+                                    <img src="{{ asset('storage/'.$item->associatedModel->images->first()->full) }}" alt="">                                        
+                                    @endif
+                                    <h5>{{ Str::ucfirst($item->name) }}</h5>
                                 </td>
                                 <td class="shoping__cart__price">
                                     {{ config('settings.currency_symbol') . $item->price }}
                                 </td>
                                 <td class="shoping__cart__quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
+                                    <form id="frm" action="{{ route('product.update.cart') }}" method="post">
+                                        @csrf
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" name="qty" value="{{ $item->quantity }}">
+                                                <input type="text" hidden name="cartId" value="{{ $item->id }}">
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </td>
                                 <td class="shoping__cart__total">
                                     $110.00
@@ -83,8 +89,7 @@
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
                     <a href="{{ route('category.index') }}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                        Upadate Cart</a>
+                    <button class="site-btn primary-btn cart-btn cart-btn-right" onclick="document.getElementById('frm').submit()"><span class="icon_loading"></span> Upadate Cart</button>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -113,3 +118,9 @@
 </section>
 <!-- Shoping Cart Section End -->
 @endsection
+
+@push('scripts')
+    <script>
+        
+    </script>
+@endpush

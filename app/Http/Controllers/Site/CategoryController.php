@@ -9,6 +9,7 @@ use App\Contracts\ProductContract;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class CategoryController extends Controller
 {
@@ -31,18 +32,38 @@ class CategoryController extends Controller
         $products = $this->productContract->listProducts();
         $attributes = $this->attributeContract->listAttributes();
         $brands = $this->brandContract->listBrands();
-        return view('site.pages.category', compact('categories','products','brands','attributes'));
+
+        $newProducts =  collect(Product::where('featured',1)->with('images')->get())->chunk(3);
+
+        return view('site.pages.category', compact('categories','products','newProducts','brands','attributes'));
     }
 
     public function show($slug)
     {
-        $category = $this->categoryRepository->findBySlug($slug);
+        $category = $this->categoryContract->findBySlug($slug);
         $products = $category->products;
+
         $categories = Category::orderByRaw('-name ASC')->get()->nest();
         $attributes = $this->attributeContract->listAttributes();
         $brands = $this->brandContract->listBrands();
 
-        return view('site.pages.category', compact('categories','category','products','brands','attributes'));
+        $newProducts =  collect(Product::where('featured',1)->with('images')->get())->chunk(3);
+
+        return view('site.pages.category', compact('categories','category','products','newProducts','brands','attributes'));
+
+    }
+
+    public function sort(Request $request)
+    {
+        $products = Product::orderByRaw('-' . $request->input('sort') . ' ASC')->get();
+
+        $categories = Category::orderByRaw('-name ASC')->get()->nest();
+        $attributes = $this->attributeContract->listAttributes();
+        $brands = $this->brandContract->listBrands();
+
+        $newProducts =  collect(Product::where('featured',1)->with('images')->get())->chunk(3);
+
+        return view('site.pages.category', compact('categories','products','newProducts','brands','attributes'));
 
     }
 }

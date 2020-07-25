@@ -14,6 +14,18 @@ class SettingTableSeed extends Seeder
             'value'                     =>  'E-Commerce Application',
         ],
         [
+            'key'                       =>  'company_name',
+            'value'                     =>  'Tiko',
+        ],
+        [
+            'key'                       =>  'company_address',
+            'value'                     =>  '60-49 Road 11378 New York',
+        ],
+        [
+            'key'                       =>  'company_phone',
+            'value'                     =>  '+65 11.188.888',
+        ],
+        [
             'key'                       =>  'site_title',
             'value'                     =>  'E-Commerce',
         ],

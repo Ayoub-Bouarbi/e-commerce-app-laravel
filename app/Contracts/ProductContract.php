@@ -45,4 +45,15 @@ interface ProductContract
      * @return mixed
      */
     public function findProductBySlug($slug);
+    /**
+     * @param $slug
+     * @return mixed
+     */
+    public function findProductByIdWithImages(int $id);
+    
+    /**
+    * @param $slug
+    * @return mixed
+    */
+    public function findBySearchItem($search);
 }

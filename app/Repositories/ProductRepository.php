@@ -9,6 +9,7 @@ use App\Contracts\ProductContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class ProductRepository
@@ -45,17 +46,39 @@ class ProductRepository extends BaseRepository implements ProductContract
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findProductById(int $id)
-    {
-        try {
-            return $this->findOneOrFail($id);
+     public function findProductById(int $id)
+     {
+         try {
+             return $this->findOneOrFail($id);
 
-        } catch (ModelNotFoundException $e) {
+         } catch (ModelNotFoundException $e) {
 
-            throw new ModelNotFoundException($e);
-        }
+             throw new ModelNotFoundException($e);
+         }
 
-    }
+     }
+
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws ModelNotFoundException
+     */
+     public function findProductByIdWithImages(int $id)
+     {
+         try {
+             $product = Product::where('id', $id)
+                        ->with('images')
+                        ->with('category')
+                        ->with('brand')->first();
+
+            return $product;
+
+         } catch (ModelNotFoundException $e) {
+
+             throw new ModelNotFoundException($e);
+         }
+
+     }
 
     /**
      * @param array $params
@@ -75,9 +98,6 @@ class ProductRepository extends BaseRepository implements ProductContract
 
             $product->save();
 
-            if ($collection->has('categories')) {
-                $product->categories()->sync($params['categories']);
-            }
             return $product;
 
         } catch (QueryException $exception) {
@@ -102,10 +122,6 @@ class ProductRepository extends BaseRepository implements ProductContract
 
         $product->update($merge->all());
 
-        if ($collection->has('categories')) {
-            $product->categories()->sync($params['categories']);
-        }
-
         return $product;
     }
 
@@ -128,10 +144,16 @@ class ProductRepository extends BaseRepository implements ProductContract
     public function findProductBySlug($slug)
     {
         $product = Product::where('slug', $slug)
-                            ->with('categories')
+                            ->with('category')
                             ->with('brand')->first();
 
         return $product;
-    }    
- 
+    }
+
+    public function findBySearchItem($search)
+    {
+        return Product::whereHas('category', function (Builder $builder) use ($search) {
+            $builder->where('name','like','%' . $search . '%');
+        })->get();
+    }
 }

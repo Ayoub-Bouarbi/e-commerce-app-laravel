@@ -6,7 +6,7 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>All departments</span>
+                        <span>{{ __('All Departments') }}</span>
                     </div>
                     <ul>
                         @foreach ($categories as $cat)
@@ -15,7 +15,7 @@
                                 <a href="{{ route('category.show',$category->slug) }}">{{ Str::ucfirst($category->name) }}</a>
                             </li>
                             @empty
-                                <p>there is no category</p>
+                                <p>{{ __('There is no Category') }}</p>
                             @endforelse
                         @endforeach
                     </ul>
@@ -24,9 +24,9 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="#">
-                            <input type="text" placeholder="What do yo u need?">
-                            <button type="submit" class="site-btn">SEARCH</button>
+                        <form action="{{ route('product.search') }}" method="GET">
+                            <input type="text" name="search" placeholder="{{ __('What do you need?') }}">
+                            <button type="submit" class="site-btn">{{ __('SEARCH') }}</button>
                         </form>
                     </div>
                     <div class="hero__search__phone">
@@ -34,8 +34,8 @@
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>+65 11.188.888</h5>
-                            <span>support 24/7 time</span>
+                            <h5>{{ config('settings.company_phone') }}</h5>
+                            <span>{{ __('Support 24/7 Time') }}</span>
                         </div>
                     </div>
                 </div>

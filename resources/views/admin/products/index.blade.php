@@ -34,9 +34,7 @@
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->brand->name }}</td>
                                     <td>
-                                        @foreach($product->categories as $category)
-                                            <span class="badge badge-info">{{ $category->name }}</span>
-                                        @endforeach
+                                        <span class="badge badge-info">{{ $product->category->name }}</span>
                                     </td>
                                     <td>{{ config('settings.currency_symbol') }}{{ $product->price }}</td>
                                     <td class="text-center">
