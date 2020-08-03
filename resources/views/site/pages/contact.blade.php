@@ -5,15 +5,15 @@
 
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="{{ asset('img/breadcrumb.jpg') }}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Contact Us</h2>
+                    <h2>{{ __('Contact us') }}</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Contact Us</span>
+                        <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                        <span>{{ __('Contact us') }}</span>
                     </div>
                 </div>
             </div>
@@ -26,18 +26,25 @@
 <section class="contact spad">
     <div class="container">
         <div class="row">
+            <div class="col-sm-12">
+                @if (Session::has('success'))
+                <p class="alert alert-success">{{ Session::get('success') }}</p>
+                @endif
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_phone"></span>
                     <h4>Phone</h4>
-                    <p>+01-3-8888-6868</p>
+                    <p>{{ config('settings.company_phone') }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_pin_alt"></span>
                     <h4>Address</h4>
-                    <p>60-49 Road 11378 New York</p>
+                    <p>{{ config('settings.company_address') }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -51,7 +58,7 @@
                 <div class="contact__widget">
                     <span class="icon_mail_alt"></span>
                     <h4>Email</h4>
-                    <p>hello@colorlib.com</p>
+                    <p>{{ config('settings.company_email') }}</p>
                 </div>
             </div>
         </div>
@@ -69,8 +76,8 @@
         <div class="inside-widget">
             <h4>New York</h4>
             <ul>
-                <li>Phone: +12-345-6789</li>
-                <li>Add: 16 Creek Ave. Farmingdale, NY</li>
+                <li>Phone: {{ config('settings.company_phone') }}</li>
+                <li>Add: {{ config('settings.company_address') }}</li>
             </ul>
         </div>
     </div>
@@ -87,16 +94,17 @@
                 </div>
             </div>
         </div>
-        <form action="#">
+        <form action="{{ route('contact.send') }}" method="POST">
+            @csrf
             <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <input type="text" placeholder="Your name">
+                    <input type="text" name="name" placeholder="Your name">
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <input type="text" placeholder="Your Email">
+                    <input type="email" name="email" placeholder="Your Email">
                 </div>
                 <div class="col-lg-12 text-center">
-                    <textarea placeholder="Your message"></textarea>
+                    <textarea name="message" placeholder="Your message"></textarea>
                     <button type="submit" class="site-btn">SEND MESSAGE</button>
                 </div>
             </div>

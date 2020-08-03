@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Contracts\AttributeContract;
 use App\Contracts\BrandContract;
 use App\Contracts\CategoryContract;
+use App\Contracts\FavoriteProductContract;
 use App\Contracts\OrderContract;
 use App\Contracts\ProductContract;
 use App\Models\Order;
 use App\Repositories\AttributeRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\FavoriteProductRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +26,7 @@ class RepositoryServiceProvider extends ServiceProvider
         BrandContract::class            =>          BrandRepository::class,
         ProductContract::class          =>          ProductRepository::class,
         OrderContract::class            =>          OrderRepository::class,
+        FavoriteProductContract::class  =>          FavoriteProductRepository::class,
     ];
 
     /**

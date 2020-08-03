@@ -51,6 +51,11 @@
                                     <span class="arrow_carrot-down"></span>
                                     <ul>
                                         <li>
+                                            <a href="{{ route('account.orders') }}">
+                                                {{ __('Orders') }}
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
@@ -88,7 +93,7 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="{{ route('favorite.index') }}"><i class="fa fa-heart"></i> <span>{{ auth()->user() ? auth()->user()->favoriteProducts->count() : 0 }}</span></a></li>
                             <li><a href="{{ route('checkout.cart') }}"><i class="fa fa-shopping-bag"></i>
                                     <span>{{ Cart::getContent()->count() }}</span></a></li>
                         </ul>

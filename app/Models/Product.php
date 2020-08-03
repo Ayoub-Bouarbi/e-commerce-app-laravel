@@ -31,6 +31,8 @@ class Product extends Model
         'featured'  =>  'boolean'
     ];
 
+    protected $with = ['images'];
+
      /**
      * @param $value
      */

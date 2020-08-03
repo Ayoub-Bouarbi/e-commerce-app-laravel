@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -56,6 +57,23 @@ class CategoryController extends Controller
     public function sort(Request $request)
     {
         $products = Product::orderByRaw('-' . $request->input('sort') . ' ASC')->get();
+
+        $categories = Category::orderByRaw('-name ASC')->get()->nest();
+        $attributes = $this->attributeContract->listAttributes();
+        $brands = $this->brandContract->listBrands();
+
+        $newProducts =  collect(Product::where('featured',1)->with('images')->get())->chunk(3);
+
+        return view('site.pages.category', compact('categories','products','newProducts','brands','attributes'));
+
+    }
+
+    public function showAttribute(Request $request)
+    {
+        $products = Product::join('product_attributes','products.id', '=', 'product_attributes.product_id')
+                    ->where('product_attributes.value','=',$request->attribute)
+                    ->select('products.*')
+                    ->get();
 
         $categories = Category::orderByRaw('-name ASC')->get()->nest();
         $attributes = $this->attributeContract->listAttributes();

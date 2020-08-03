@@ -43,14 +43,17 @@
                         <h4>{{ __('Colors') }}</h4>
                         @foreach ($attributes as $attribute)
                             @if($attribute->name == "Color")
+                            <form id="frm_color" action="{{ route('category.showAttribute') }}" method="POST">
+                                @csrf
                                 @foreach ($attribute->values as $value)
                                     <div class="sidebar__item__color sidebar__item__color--{{ $value->value }}">
-                                        <label for="{{ $value->value }}">
+                                        <label onclick="document.getElementById('frm_color').submit();" for="{{ $value->value }}">
                                             {{ Str::ucfirst($value->value) }}
-                                            <input type="radio" name="color" id="{{ $value->value }}">
+                                            <input type="radio" name="attribute" id="{{ $value->value }}" value="{{ $value->value }}">
                                         </label>
                                     </div>
                                 @endforeach
+                            </form>
                             @endif
                         @endforeach
                     </div>
@@ -58,14 +61,17 @@
                         <h4>{{ __('Popular Size') }}</h4>
                         @foreach ($attributes as $attribute)
                             @if ($attribute->name == "Size")
+                            <form id="frm_size" action="{{ route('category.showAttribute') }}" method="POST">
+                                @csrf
                                 @foreach ($attribute->values as $value)
                                     <div class="sidebar__item__size">
-                                        <label for="{{ $value->value }}">
+                                        <label onclick="document.getElementById('frm_size').submit();" for="{{ $value->value }}">
                                             {{ Str::ucfirst($value->value) }}
-                                            <input type="radio" name="size" id="{{ $value->value }}">
+                                            <input type="radio" name="attribute" id="{{ $value->value }}" value="{{ $value->value }}">
                                         </label>
                                     </div>
                                 @endforeach
+                            </form>
                            @endif
                         @endforeach
                     </div>
@@ -108,8 +114,8 @@
                                                 data-setbg="{{ asset('storage/'.$product->images->first()->full) }}">
                                                 <div class="product__discount__percent">-20%</div>
                                                 <ul class="product__item__pic__hover">
-                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                    <li><a href="{{ route('product.show',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="{{ route('favorite.add') }}"><i class="fa fa-heart"></i></a></li>
                                                 </ul>
                                             </div>
                                             <div class="product__discount__item__text">
@@ -151,7 +157,7 @@
                             <div class="product__item__pic set-bg" data-setbg="{{ $product->images->count() > 0 ? asset('storage/'.$product->images->first()->full) : '' }}">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="{{ route('product.show',$product->slug) }}"><i class="fa fa-eye"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="{{ route('favorite.add',$product->id) }}"><i class="fa fa-heart"></i></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">

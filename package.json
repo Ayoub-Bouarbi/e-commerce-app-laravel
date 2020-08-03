@@ -12,7 +12,7 @@
     "devDependencies": {
         "axios": "^0.19",
         "cross-env": "^7.0",
-        "laravel-mix": "^5.0.1",
+        "laravel-mix": "^5.0.4",
         "lodash": "^4.17.19",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
@@ -21,6 +21,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@babel/compat-data": "^7.10.5",
         "vue-swal": "^0.1.0",
         "vue2-dropzone": "^3.6.0"
     }
