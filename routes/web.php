@@ -20,7 +20,6 @@ Auth::routes();
 Route::get('/', 'Site\HomeController@index')->name("home");
 Route::get('/category/', 'Site\CategoryController@index')->name('category.index');
 Route::get('/category/{slug}', 'Site\CategoryController@show')->name('category.show');
-Route::get('/favorite', 'Site\FavoriteProductController@index')->name('favorite.index');
 Route::get('/product/search', 'Site\ProductController@search')->name('product.search');
 Route::get('/product/{slug}', 'Site\ProductController@show')->name('product.show');
 
@@ -42,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/checkout/order', 'Site\CheckoutController@placeOrder')->name('checkout.place.order');
     Route::get('checkout/payment/complete', 'Site\CheckoutController@complete')->name('checkout.payment.complete');
     Route::get('account/orders', 'Site\AccountController@getOrders')->name('account.orders');
+    Route::get('/favorite', 'Site\FavoriteProductController@index')->name('favorite.index');
     Route::get('/favorite/{id}', 'Site\FavoriteProductController@add')->name('favorite.add');
 });
 

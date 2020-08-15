@@ -30,7 +30,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::orderByRaw('-name ASC')->get()->nest();
-        $products = $this->productContract->listProducts();
+        $products = Product::paginate(8);
         $attributes = $this->attributeContract->listAttributes();
         $brands = $this->brandContract->listBrands();
 
@@ -42,7 +42,7 @@ class CategoryController extends Controller
     public function show($slug)
     {
         $category = $this->categoryContract->findBySlug($slug);
-        $products = $category->products;
+        $products = Product::paginate(8)->where('category_id','=',$category->id);
 
         $categories = Category::orderByRaw('-name ASC')->get()->nest();
         $attributes = $this->attributeContract->listAttributes();
@@ -56,7 +56,7 @@ class CategoryController extends Controller
 
     public function sort(Request $request)
     {
-        $products = Product::orderByRaw('-' . $request->input('sort') . ' ASC')->get();
+        $products = Product::paginate(8)->orderByRaw('-' . $request->input('sort') . ' ASC');
 
         $categories = Category::orderByRaw('-name ASC')->get()->nest();
         $attributes = $this->attributeContract->listAttributes();

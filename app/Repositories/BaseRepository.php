@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\BaseContract;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Class BaseRepository
@@ -11,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @package \App\Repositories
  */
 class BaseRepository implements BaseContract
-{ 
-    /** 
+{
+    /**
      * @var Model
      */
     protected $model;
